@@ -22,14 +22,14 @@ class _CustomerReviewWidgetState extends State<CustomerReviewWidget> {
   @override
   Widget build(BuildContext context) {
     return Material(
-      elevation: 3, // Tambahkan efek shadow untuk tampilan card
+      elevation: 3,
       borderRadius: BorderRadius.circular(AppSize.s12),
       child: Container(
         padding: const EdgeInsets.all(AppPadding.p16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: const Color.fromARGB(255, 128, 76, 76),
           borderRadius: BorderRadius.circular(AppSize.s12),
-          border: Border.all(color: Colors.grey[300]!), // Tambahkan border halus
+          border: Border.all(color: const Color.fromARGB(255, 184, 114, 114)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,13 +42,12 @@ class _CustomerReviewWidgetState extends State<CustomerReviewWidget> {
               ),
             ),
             const SizedBox(height: AppSize.s12),
-            
+
             TextField(
               controller: _nameController,
               decoration: InputDecoration(
                 labelText: "Nama Anda",
                 filled: true,
-                fillColor: Colors.grey[100],
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(AppSize.s8),
                   borderSide: BorderSide.none,
@@ -56,13 +55,12 @@ class _CustomerReviewWidgetState extends State<CustomerReviewWidget> {
               ),
             ),
             const SizedBox(height: AppSize.s12),
-            
+
             TextField(
               controller: _customerReview,
               decoration: InputDecoration(
                 labelText: "Ulasan Anda",
                 filled: true,
-                fillColor: Colors.grey[100],
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(AppSize.s8),
                   borderSide: BorderSide.none,
@@ -71,18 +69,23 @@ class _CustomerReviewWidgetState extends State<CustomerReviewWidget> {
               maxLines: 3,
             ),
             const SizedBox(height: AppSize.s16),
-            
+
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
                   if (_nameController.text.isNotEmpty &&
-                      _customerReview.text.isNotEmpty ) {
+                      _customerReview.text.isNotEmpty) {
                     context.read<RestaurantReviewProvider>().addReview(
-                        widget.data.id, _nameController.text, _customerReview.text);
+                      widget.data.id,
+                      _nameController.text,
+                      _customerReview.text,
+                    );
                     _nameController.clear();
                     _customerReview.clear();
-                    context.read<RestaurantDetailProvider>().getRestaurantDetail(widget.data.id);
+                    context
+                        .read<RestaurantDetailProvider>()
+                        .getRestaurantDetail(widget.data.id);
                   }
                 },
                 style: ElevatedButton.styleFrom(

@@ -6,20 +6,25 @@ import 'package:gastro_go_app/styles_manager/font_style_manager.dart';
 import 'package:gastro_go_app/styles_manager/values_manager.dart';
 
 class CardWidget extends StatelessWidget {
+  final int index;
+  final String source;
   final RestaurantData restaurantData;
   final String name;
   final String image;
   final String city;
   final double rating;
   final Function() onTap;
-  const CardWidget(
-      {super.key,
-      required this.name,
-      required this.image,
-      required this.city,
-      required this.rating,
-      required this.restaurantData,
-      required this.onTap});
+  const CardWidget({
+    super.key,
+    required this.index,
+    required this.source,
+    required this.name,
+    required this.image,
+    required this.city,
+    required this.rating,
+    required this.restaurantData,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,13 +40,16 @@ class CardWidget extends StatelessWidget {
               Stack(
                 children: [
                   Hero(
-                    tag: 'dash_${name}_$city',
+                    tag: 'dash_${restaurantData.id}_card_${index}_$source',
                     child: ClipRRect(
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(AppSize.s8),
                         topRight: Radius.circular(AppSize.s8),
                       ),
                       child: Image.network(
+                        errorBuilder: (_, _, _) {
+                          return const Icon(Icons.error_outline);
+                        },
                         imageUrl,
                         width: double.infinity,
                         height: 124,
@@ -49,15 +57,13 @@ class CardWidget extends StatelessWidget {
                       ),
                     ),
                   ),
-    
                   Positioned(
                     top: 8,
                     right: 8,
                     child: FavoriteIconWidget(restaurantData: restaurantData),
-                  )
+                  ),
                 ],
               ),
-    
               ListTile(
                 title: Text(
                   name,
@@ -77,9 +83,10 @@ class CardWidget extends StatelessWidget {
                     Text(
                       city,
                       style: const TextStyle(
-                          fontSize: AppSize.s14,
-                          fontWeight: FontWeightManager.light,
-                          color: Colors.grey),
+                        fontSize: AppSize.s14,
+                        fontWeight: FontWeightManager.light,
+                        color: Colors.grey,
+                      ),
                     ),
                   ],
                 ),
@@ -87,7 +94,10 @@ class CardWidget extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const Icon(
-                        size: AppSize.s18, Icons.star, color: Colors.yellow),
+                      size: AppSize.s18,
+                      Icons.star,
+                      color: Colors.yellow,
+                    ),
                     Text(
                       rating.toString(),
                       style: const TextStyle(

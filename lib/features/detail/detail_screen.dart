@@ -18,48 +18,42 @@ class DetailScreen extends StatefulWidget {
 class _DetailScreenState extends State<DetailScreen> {
   @override
   void initState() {
-    
     super.initState();
-    Future.microtask((){
+    Future.microtask(() {
       // ignore: use_build_context_synchronously
-      context.read<RestaurantDetailProvider>().getRestaurantDetail(widget.restaurantId);
+      context.read<RestaurantDetailProvider>().getRestaurantDetail(
+        widget.restaurantId,
+      );
 
       // ignore: use_build_context_synchronously
-      context.read<RestaurantDetailProvider>().getRestaurantDetail(widget.restaurantId);
-
+      context.read<RestaurantDetailProvider>().getRestaurantDetail(
+        widget.restaurantId,
+      );
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => RestaurantReviewProvider(
-        context.read<ApiService>()
-      ),
+      create: (context) => RestaurantReviewProvider(context.read<ApiService>()),
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Detail Restaurant'),
-        ),
+        appBar: AppBar(title: const Text('Detail Restaurant')),
         body: Consumer2<RestaurantDetailProvider, RestaurantReviewProvider>(
           builder: (context, detailProvider, reviewProvider, child) {
-              if (detailProvider.resultState is RestaurantDetailLoadingState ||
+            if (detailProvider.resultState is RestaurantDetailLoadingState ||
                 reviewProvider.resultState is RestaurantReviewLoadingState) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return const Center(child: CircularProgressIndicator());
             }
-            return switch(detailProvider.resultState) {
+            return switch (detailProvider.resultState) {
               RestaurantDetailLoadingState() => const Center(
                 child: CircularProgressIndicator(),
-              ), 
+              ),
               RestaurantDetailErrorState() => const Center(
                 child: Text('An unexpected error occurred. Try it again'),
               ),
-              RestaurantDetailLoadedState(data: var restaurantDetail) => DetailScreenWidget(
-                data: restaurantDetail,
-              ),
-              _ => const Center(
-                child: Text('Data Not Found'),
-              ),
+              RestaurantDetailLoadedState(data: var restaurantDetail) =>
+                DetailScreenWidget(data: restaurantDetail),
+              _ => const Center(child: Text('Data Not Found')),
             };
           },
         ),

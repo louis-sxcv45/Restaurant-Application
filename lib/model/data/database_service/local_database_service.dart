@@ -6,10 +6,8 @@ class LocalDatabaseService {
   static const String _tableName = 'restaurant';
   static const int _databaseVersion = 1;
 
-
   Future<void> createTables(Database database) async {
-    await database.execute(
-      """
+    await database.execute("""
         CREATE TABLE $_tableName(
         id TEXT PRIMARY KEY,
         name TEXT,
@@ -18,17 +16,16 @@ class LocalDatabaseService {
         city TEXT,
         rating REAL
         )
-      """
-    );
+      """);
   }
 
   Future<Database> _intializeDb() async {
     return openDatabase(
-      _databaseName, 
+      _databaseName,
       version: _databaseVersion,
       onCreate: (Database database, int version) async {
         await createTables(database);
-      }
+      },
     );
   }
 
@@ -37,9 +34,9 @@ class LocalDatabaseService {
 
     final data = restaurant.toJson();
     final id = await db.insert(
-      _tableName, 
+      _tableName,
       data,
-      conflictAlgorithm: ConflictAlgorithm.replace
+      conflictAlgorithm: ConflictAlgorithm.replace,
     );
 
     return id;
@@ -47,9 +44,9 @@ class LocalDatabaseService {
 
   Future<List<RestaurantData>> getAllData() async {
     final db = await _intializeDb();
-    final results = await db.query(_tableName,);
-    
-    return results.map((result)=> RestaurantData.fromJson(result)).toList();
+    final results = await db.query(_tableName);
+
+    return results.map((result) => RestaurantData.fromJson(result)).toList();
   }
 
   Future<RestaurantData> getDataId(String id) async {
@@ -58,18 +55,18 @@ class LocalDatabaseService {
       _tableName,
       where: "id = ?",
       whereArgs: [id],
-      limit: 1
+      limit: 1,
     );
 
-    return results.map((result)=> RestaurantData.fromJson(result)).first;
+    return results.map((result) => RestaurantData.fromJson(result)).first;
   }
 
   Future<String> removeItem(String id) async {
     final db = await _intializeDb();
     final result = await db.delete(
-      _tableName, 
+      _tableName,
       where: "id = ?",
-      whereArgs: [id]
+      whereArgs: [id],
     );
 
     return result.toString();

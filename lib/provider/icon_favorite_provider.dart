@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
-class IconFavoriteProvider extends ChangeNotifier{
-  bool _isFavoriteButton = false;
+class IconFavoriteProvider extends ChangeNotifier {
+  final Map<String, bool> _favoriteStatus = {};
 
-  bool get isFavoriteButton => _isFavoriteButton;
+  bool isFavorite(String restaurantId) {
+    return _favoriteStatus[restaurantId] ?? false;
+  }
 
-  set setIsFavorite(bool value) {
-    _isFavoriteButton = value;
+  void setFavorite(String restaurantId, bool value) {
+    _favoriteStatus[restaurantId] = value;
     notifyListeners();
   }
 }

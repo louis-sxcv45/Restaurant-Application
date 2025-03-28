@@ -1,8 +1,6 @@
 import 'package:gastro_go_app/model/data/restaurant_detail_data/customer_review.dart';
 
-sealed class RestaurantReviewState {
-
-}
+sealed class RestaurantReviewState {}
 
 class RestaurantReviewNoneState extends RestaurantReviewState {}
 

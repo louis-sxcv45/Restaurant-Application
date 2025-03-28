@@ -5,5 +5,4 @@ enum NavigationRoutes {
   final String name;
 
   const NavigationRoutes(this.name);
-
 }

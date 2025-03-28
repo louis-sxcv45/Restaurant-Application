@@ -1,0 +1,2 @@
+C:/Users/louis/gastro_go_app/android/app/.cxx/RelWithDebInfo/2v6g3p2m/x86/CMakeFiles/edit_cache.dir
+C:/Users/louis/gastro_go_app/android/app/.cxx/RelWithDebInfo/2v6g3p2m/x86/CMakeFiles/rebuild_cache.dir

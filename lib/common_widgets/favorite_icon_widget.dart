@@ -13,42 +13,55 @@ class FavoriteIconWidget extends StatefulWidget {
 }
 
 class _FavoriteIconWidgetState extends State<FavoriteIconWidget> {
-
   @override
   void initState() {
-    final favoriteProvider = context.read<FavoriteRestaurantProvider>();
-    final iconFavorite = context.read<IconFavoriteProvider>();
-
-    Future.microtask(() async {
-      await favoriteProvider.loadFavoriteById(widget.restaurantData.id);
-      final value = favoriteProvider.checkItemFavorite(widget.restaurantData.id);
-      
-      iconFavorite.setIsFavorite = value;
-    });
     super.initState();
+    Future.microtask(() async {
+      // ignore: use_build_context_synchronously
+      final favoriteProvider = context.read<FavoriteRestaurantProvider>();
+      // ignore: use_build_context_synchronously
+      final iconFavoriteProvider = context.read<IconFavoriteProvider>();
+
+      await favoriteProvider.loadFavoriteById(widget.restaurantData.id);
+      final value = favoriteProvider.checkItemFavorite(
+        widget.restaurantData.id,
+      );
+
+      iconFavoriteProvider.setFavorite(widget.restaurantData.id, value);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final iconFavoriteProvider = context.watch<IconFavoriteProvider>();
+    final isFavorite = iconFavoriteProvider.isFavorite(
+      widget.restaurantData.id,
+    );
+
     return IconButton(
       onPressed: () async {
         final favoriteProvider = context.read<FavoriteRestaurantProvider>();
-        final iconFavorite = context.read<IconFavoriteProvider>();
+        final iconFavoriteProvider = context.read<IconFavoriteProvider>();
 
-        final isFavorite = iconFavorite.isFavoriteButton;
+        final currentFavorite = iconFavoriteProvider.isFavorite(
+          widget.restaurantData.id,
+        );
 
-        if (isFavorite) {
+        if (currentFavorite) {
           await favoriteProvider.removeFavorite(widget.restaurantData.id);
         } else {
           await favoriteProvider.saveRestaurant(widget.restaurantData);
         }
 
-        iconFavorite.setIsFavorite = !isFavorite;
+        iconFavoriteProvider.setFavorite(
+          widget.restaurantData.id,
+          !currentFavorite,
+        );
         favoriteProvider.loadAllFavorite();
       },
       icon: Icon(
-        color: Colors.red,
-        context.watch<IconFavoriteProvider>().isFavoriteButton ? Icons.favorite : Icons.favorite_border,
+        isFavorite ? Icons.favorite : Icons.favorite_border,
+        color: const Color.fromARGB(255, 236, 6, 6),
       ),
     );
   }

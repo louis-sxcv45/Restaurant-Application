@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gastro_go_app/model/api/api_service.dart';
 import 'package:gastro_go_app/static/restaurant_list_state.dart';
 
-class RestaurantListProvider extends ChangeNotifier{
+class RestaurantListProvider extends ChangeNotifier {
   final ApiService _apiService;
 
   RestaurantListProvider(this._apiService);

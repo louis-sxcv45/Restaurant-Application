@@ -12,12 +12,12 @@ class FavoriteScreen extends StatefulWidget {
 }
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
-
   @override
   void initState() {
     super.initState();
 
-    Future.microtask((){
+    Future.microtask(() {
+      // ignore: use_build_context_synchronously
       context.read<FavoriteRestaurantProvider>().loadAllFavorite();
     });
   }
@@ -25,38 +25,41 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Favorite Restaurant'),
-      ),
+      appBar: AppBar(title: const Text('Favorite Restaurant')),
       body: Consumer<FavoriteRestaurantProvider>(
-          builder: (context, value, child) {
-        final listFavorite = value.restaurantList ?? [];
-        return switch (listFavorite.isNotEmpty) {
-          true => CustomScrollView(
+        builder: (context, value, child) {
+          final listFavorite = value.restaurantList ?? [];
+          return switch (listFavorite.isNotEmpty) {
+            true => CustomScrollView(
               slivers: [
                 SliverList.builder(
-                    itemCount: listFavorite.length,
-                    itemBuilder: (context, index) {
-                      final dataRestaurant = listFavorite[index];
-                      return CardWidget(
-                          restaurantData: dataRestaurant,
-                          onTap: () {
-                            Navigator.pushNamed(
-                                context, NavigationRoutes.detailRoute.name,
-                                arguments: dataRestaurant.id);
-                          },
-                          name: dataRestaurant.name,
-                          image: dataRestaurant.pictureId,
-                          city: dataRestaurant.city,
-                          rating: dataRestaurant.rating);
-                    })
+                  itemCount: listFavorite.length,
+                  itemBuilder: (context, index) {
+                    final dataRestaurant = listFavorite[index];
+                    return CardWidget(
+                      index: index,
+                      source: 'favorite',
+                      restaurantData: dataRestaurant,
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          NavigationRoutes.detailRoute.name,
+                          arguments: dataRestaurant.id,
+                        );
+                      },
+                      name: dataRestaurant.name,
+                      image: dataRestaurant.pictureId,
+                      city: dataRestaurant.city,
+                      rating: dataRestaurant.rating,
+                    );
+                  },
+                ),
               ],
             ),
-          _ => const Center(
-              child: Text('Data Not Found'),
-            ),
-        };
-      }),
+            _ => const Center(child: Text('Data Not Found')),
+          };
+        },
+      ),
     );
   }
 }

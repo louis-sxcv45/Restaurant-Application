@@ -12,10 +12,7 @@ import 'package:provider/provider.dart';
 class DetailScreenWidget extends StatelessWidget {
   final RestaurantDetail data;
 
-  const DetailScreenWidget({
-    super.key,
-    required this.data,
-  });
+  const DetailScreenWidget({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -25,72 +22,58 @@ class DetailScreenWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Hero(
-            tag: 'dash_${data.name}_${data.city}',
+            tag: 'dash_${data.id}',
             child: ClipRRect(
               borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(AppSize.s8),
                 bottomRight: Radius.circular(AppSize.s8),
               ),
-              child: Image.network(
-                imageUrl,
-                fit: BoxFit.cover,
-              ),
+              child: Image.network(imageUrl, fit: BoxFit.cover),
             ),
           ),
           Container(
-            margin: const EdgeInsets.only(
-              left: AppMargin.m8,
-            ),
+            margin: const EdgeInsets.only(left: AppMargin.m8),
             child: Text(
               data.name,
-              style: TextStyle(
-                  fontSize: FontSizeManager.f24,
-                  fontWeight: FontWeightManager.semiBold,
-                  color: Theme.of(context).brightness == Brightness.dark
-                      ? Colors.white
-                      : Colors.black
-                ),
+              style: const TextStyle(
+                fontSize: FontSizeManager.f24,
+                fontWeight: FontWeightManager.semiBold,
+              ),
             ),
           ),
           LocationWidget(
-              city: data.city, address: data.address, rating: data.rating),
-          const SizedBox(
-            height: AppSize.s12,
+            city: data.city,
+            address: data.address,
+            rating: data.rating,
           ),
+          const SizedBox(height: AppSize.s12),
           Container(
             margin: const EdgeInsets.symmetric(horizontal: AppMargin.m8),
             child: Text(
               data.description,
               textAlign: TextAlign.justify,
-              style: TextStyle(
-                  fontSize: FontSizeManager.f14,
-                  fontWeight: FontWeightManager.light,
-                  color: Theme.of(context).brightness == Brightness.dark
-                      ? Colors.white
-                      : Colors.black
-                ),
+              style: const TextStyle(
+                fontSize: FontSizeManager.f14,
+                fontWeight: FontWeightManager.light,
+              ),
             ),
           ),
           const SizedBox(height: AppSize.s12),
 
           CategoriesAndMenuWidget(
-              categories: data.categories,
-              drinksMenu: data.menus.drinks,
-              foodsMenu: data.menus.foods),
+            categories: data.categories,
+            drinksMenu: data.menus.drinks,
+            foodsMenu: data.menus.foods,
+          ),
 
           Container(
-            margin: const EdgeInsets.only(
-              left: AppMargin.m8,
-            ),
-            child: Text(
+            margin: const EdgeInsets.only(left: AppMargin.m8),
+            child: const Text(
               'Reviews from Customer',
               style: TextStyle(
-                  fontSize: FontSizeManager.f18,
-                  fontWeight: FontWeightManager.bold,
-                  color: Theme.of(context).brightness == Brightness.dark
-                      ? Colors.white
-                      : Colors.black
-                ), 
+                fontSize: FontSizeManager.f18,
+                fontWeight: FontWeightManager.bold,
+              ),
             ),
           ),
 
@@ -98,41 +81,40 @@ class DetailScreenWidget extends StatelessWidget {
             builder: (context, value, child) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: data.customerReviews.map((reviews) {
-                  return Container(
-                    margin: const EdgeInsets.only(
-                        bottom: AppMargin.m8,
-                        left: AppMargin.m8
+                children:
+                    data.customerReviews.map((reviews) {
+                      return Container(
+                        margin: const EdgeInsets.only(
+                          bottom: AppMargin.m8,
+                          left: AppMargin.m8,
                         ), // Biar ada jarak antar review
-                    padding: const EdgeInsets.all(AppPadding.p8),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(AppSize.s8),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          data.id
+                        padding: const EdgeInsets.all(AppPadding.p8),
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 126, 99, 99),
+                          borderRadius: BorderRadius.circular(AppSize.s8),
                         ),
-                        
-                        Text(
-                          reviews.name,
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(data.id),
 
-                        const SizedBox(height: AppSize.s12),
-                        Text(reviews.review),
-                      ],
-                    ),
-                  );
-                }).toList(),
+                            Text(
+                              reviews.name,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+
+                            const SizedBox(height: AppSize.s12),
+                            Text(reviews.review),
+                          ],
+                        ),
+                      );
+                    }).toList(),
               );
             },
           ),
-          CustomerReviewWidget(
-            data: data,
-          )
+          CustomerReviewWidget(data: data),
         ],
       ),
     );

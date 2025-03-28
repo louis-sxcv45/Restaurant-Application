@@ -22,30 +22,35 @@ class MainScreen extends StatelessWidget {
               value.setIndexNav(index);
             },
             controller: pageController,
-            children: const [
-              HomeScreen(),
-              FavoriteScreen(),
-              SettingsScreen(),
-            ],
+            children: const [HomeScreen(), FavoriteScreen(), SettingsScreen()],
           );
         },
       ),
       bottomNavigationBar: WaterDropNavBar(
-        backgroundColor: Colors.white,
+        backgroundColor:
+            Theme.of(context).brightness == Brightness.dark
+                ? Colors.black
+                : Colors.white,
         selectedIndex: context.watch<BottomNavProvider>().indexNav,
         onItemSelected: (index) {
           context.read<BottomNavProvider>().setIndexNav(index);
-          pageController.animateToPage(index,
-              duration: const Duration(milliseconds: 400),
-              curve: Curves.easeOutQuad);
+          pageController.animateToPage(
+            index,
+            duration: const Duration(milliseconds: 400),
+            curve: Curves.easeOutQuad,
+          );
         },
         bottomPadding: AppPadding.p8,
         barItems: [
           BarItem(filledIcon: Icons.home, outlinedIcon: Icons.home_outlined),
           BarItem(
-              filledIcon: Icons.favorite, outlinedIcon: Icons.favorite_border),
+            filledIcon: Icons.favorite,
+            outlinedIcon: Icons.favorite_border,
+          ),
           BarItem(
-              filledIcon: Icons.settings, outlinedIcon: Icons.settings_outlined)
+            filledIcon: Icons.settings,
+            outlinedIcon: Icons.settings_outlined,
+          ),
         ],
       ),
     );

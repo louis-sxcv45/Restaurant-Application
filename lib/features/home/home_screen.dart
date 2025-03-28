@@ -36,93 +36,83 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Center(
-            child: Text('GastroGo'),
+      appBar: AppBar(title: const Center(child: Text('GastroGo'))),
+      body: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: AppPadding.p4),
+            margin: const EdgeInsets.symmetric(vertical: AppMargin.m8),
+            child: TextField(
+              controller: _searchController,
+              style: const TextStyle(fontSize: AppSize.s14),
+              decoration: const InputDecoration(
+                hintText: 'Search Restaurant...',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(AppSize.s10)),
+                ),
+                prefixIcon: Icon(Icons.search),
+              ),
+              onChanged: onChanged,
+            ),
           ),
-        ),
-        body: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppPadding.p4,
-              ),
-              margin: const EdgeInsets.symmetric(
-                vertical: AppMargin.m8,
-              ),
-              child: TextField(
-                controller: _searchController,
-                style: TextStyle(
-                  fontSize: AppSize.s14,
-                  color: Theme.of(context).brightness == Brightness.dark
-                      ? Colors.white
-                      : Colors.black,
-                ),
-                decoration: InputDecoration(
-                  hintText: 'Search Restaurant...',
-                  fillColor: Theme.of(context).brightness == Brightness.dark
-                      ? Colors.white
-                      : Colors.black,
-                  border: const OutlineInputBorder(
-                      borderRadius:
-                          BorderRadius.all(Radius.circular(AppSize.s10))),
-                  prefixIcon: const Icon(Icons.search),
-                ),
-                onChanged: onChanged,
-              ),
-            ),
-            Expanded(
-              child: Consumer<RestaurantListProvider>(
-                builder: (context, value, child) {
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    if (value.resultState is RestaurantErrorState) {
-                      final message =
-                          (value.resultState as RestaurantErrorState)
-                              .errorMessage;
+          Expanded(
+            child: Consumer<RestaurantListProvider>(
+              builder: (context, value, child) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if (value.resultState is RestaurantErrorState) {
+                    final message =
+                        (value.resultState as RestaurantErrorState)
+                            .errorMessage;
 
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(SnackBar(content: Text(message)));
-                    }
-                  });
-                  return switch (value.resultState) {
-                    RestaurantLoadingState() =>
-                      const Center(child: CircularProgressIndicator()),
-                    RestaurantErrorState() => const Center(
-                        child:
-                            Text('An unexpected error occurred. Try it again'),
-                      ),
-                    RestaurantLoadedState(data: var restaurant) => restaurant
-                            .isNotEmpty
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text(message)));
+                  }
+                });
+                return switch (value.resultState) {
+                  RestaurantLoadingState() => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                  RestaurantErrorState() => const Center(
+                    child: Text('An unexpected error occurred. Try it again'),
+                  ),
+                  RestaurantLoadedState(data: var restaurant) =>
+                    restaurant.isNotEmpty
                         ? CustomScrollView(
-                            slivers: [
-                              SliverList.builder(
-                                  itemCount: restaurant.length,
-                                  itemBuilder: (context, index) {
-                                    final dataRestaurant = restaurant[index];
-                                    return CardWidget(
-                                        restaurantData: dataRestaurant,
-                                        onTap: () {
-                                          Navigator.pushNamed(context,
-                                              NavigationRoutes.detailRoute.name,
-                                              arguments: dataRestaurant.id);
-                                        },
-                                        name: dataRestaurant.name,
-                                        image: dataRestaurant.pictureId,
-                                        city: dataRestaurant.city,
-                                        rating: dataRestaurant.rating);
-                                  })
-                            ],
-                          )
-                        : const Center(
-                            child: Text('Data Not Found'),
-                          ),
-                    _ => const SizedBox(),
-                  };
-                },
-              ),
+                          slivers: [
+                            SliverList.builder(
+                              itemCount: restaurant.length,
+                              itemBuilder: (context, index) {
+                                final dataRestaurant = restaurant[index];
+                                return CardWidget(
+                                  index: index,
+                                  source: 'home',
+                                  restaurantData: dataRestaurant,
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      NavigationRoutes.detailRoute.name,
+                                      arguments: dataRestaurant.id,
+                                    );
+                                  },
+                                  name: dataRestaurant.name,
+                                  image: dataRestaurant.pictureId,
+                                  city: dataRestaurant.city,
+                                  rating: dataRestaurant.rating,
+                                );
+                              },
+                            ),
+                          ],
+                        )
+                        : const Center(child: Text('Data Not Found')),
+                  _ => const SizedBox(),
+                };
+              },
             ),
-          ],
-        ));
+          ),
+        ],
+      ),
+    );
   }
 
   @override

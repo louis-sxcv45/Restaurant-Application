@@ -1,8 +1,6 @@
 import 'package:gastro_go_app/model/data/restaurant_list_data/restaurant_data.dart';
 
-sealed class RestaurantSearchState {
-
-}
+sealed class RestaurantSearchState {}
 
 class RestaurantSearchNoneState extends RestaurantSearchState {}
 

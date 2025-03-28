@@ -6,7 +6,12 @@ class CategoriesAndMenuWidget extends StatelessWidget {
   final List categories;
   final List foodsMenu;
   final List drinksMenu;
-  const CategoriesAndMenuWidget({super.key, required this.categories, required this.drinksMenu, required this.foodsMenu});
+  const CategoriesAndMenuWidget({
+    super.key,
+    required this.categories,
+    required this.drinksMenu,
+    required this.foodsMenu,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,59 +20,45 @@ class CategoriesAndMenuWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-         Text(
+          const Text(
             "Categories",
             style: TextStyle(
-                fontSize: FontSizeManager.f18,
-                fontWeight: FontWeightManager.bold,
-                color: Theme.of(context).brightness == Brightness.dark
-                      ? Colors.white
-                      : Colors.black
-              ),
+              fontSize: FontSizeManager.f18,
+              fontWeight: FontWeightManager.bold,
+            ),
           ),
           Wrap(
             spacing: AppSize.s8,
-            children: categories
-                .map((item) => Chip(label: Text(item.name)))
-                .toList(),
+            children:
+                categories.map((item) => Chip(label: Text(item.name))).toList(),
           ),
-            const SizedBox(height: AppSize.s12),
-            Text(
-              "Makanan",
-              style: TextStyle(
-                  fontSize: FontSizeManager.f18,
-                  fontWeight: FontWeightManager.bold,
-                  color: Theme.of(context).brightness == Brightness.dark
-                      ? Colors.white
-                      : Colors.black
-              ),
+          const SizedBox(height: AppSize.s12),
+          const Text(
+            "Makanan",
+            style: TextStyle(
+              fontSize: FontSizeManager.f18,
+              fontWeight: FontWeightManager.bold,
             ),
-            Wrap(
-              spacing: AppSize.s8,
-              children: foodsMenu
-                  .map((item) => Chip(label: Text(item.name)))
-                  .toList(),
+          ),
+          Wrap(
+            spacing: AppSize.s8,
+            children:
+                foodsMenu.map((item) => Chip(label: Text(item.name))).toList(),
+          ),
+          const SizedBox(height: AppSize.s12),
+          const Text(
+            "Minuman",
+            style: TextStyle(
+              fontSize: FontSizeManager.f18,
+              fontWeight: FontWeightManager.bold,
             ),
-            const SizedBox(height: AppSize.s12),
-            Text(
-              "Minuman",
-              style: TextStyle(
-                  fontSize: FontSizeManager.f18,
-                  fontWeight: FontWeightManager.bold,
-                  color: Theme.of(context).brightness == Brightness.dark
-                      ? Colors.white
-                      : Colors.black
-              ),
-            ),
-            Wrap(
-              spacing: AppSize.s8,
-              children: drinksMenu
-                  .map((item) => Chip(label: Text(item.name)))
-                  .toList(),
-            ),
-            const SizedBox(
-              height: AppSize.s12,
-            ),
+          ),
+          Wrap(
+            spacing: AppSize.s8,
+            children:
+                drinksMenu.map((item) => Chip(label: Text(item.name))).toList(),
+          ),
+          const SizedBox(height: AppSize.s12),
         ],
       ),
     );

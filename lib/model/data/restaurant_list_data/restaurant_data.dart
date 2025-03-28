@@ -16,13 +16,13 @@ class RestaurantData {
   });
 
   factory RestaurantData.fromJson(Map<String, dynamic> json) => RestaurantData(
-        id: json["id"],
-        name: json["name"],
-        description: json["description"],
-        pictureId: json["pictureId"],
-        city: json["city"],
-        rating: (json["rating"] ?? 0.0).toDouble()
-      );
+    id: json["id"],
+    name: json["name"],
+    description: json["description"],
+    pictureId: json["pictureId"],
+    city: json["city"],
+    rating: (json["rating"] ?? 0.0).toDouble(),
+  );
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{

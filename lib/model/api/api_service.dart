@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 class ApiService {
   static const _baseUrl = "https://restaurant-api.dicoding.dev/";
 
-  Future<RestaurantListResponse> getRestaurantList() async{
+  Future<RestaurantListResponse> getRestaurantList() async {
     final response = await http.get(Uri.parse('$_baseUrl/list'));
 
     if (response.statusCode == 200) {
@@ -38,8 +38,11 @@ class ApiService {
     }
   }
 
-
-  Future<CustomerReviewResponse> postReview(String id, String name, String reviews) async {
+  Future<CustomerReviewResponse> postReview(
+    String id,
+    String name,
+    String reviews,
+  ) async {
     final response = await http.post(
       Uri.parse("$_baseUrl/review"),
       headers: {"Content-Type": "application/json"},
